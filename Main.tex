@@ -5,52 +5,13 @@
 \usepackage{graphicx}
 \usepackage{svg}
 
-\title{Sistema de Autenticação Biométrica com Provas de Conhecimento Zero}
+\title{Provas de Conhecimento Zero: Um Estudo sobre zk-SNARKs e sua Aplicação em Sistemas de Autenticação}
 \author{Alex Davis Neuwiem da Silva}
-\date{Julho de 2025}
+\date{Novembro de 2025}
 
 \begin{document}
 
 \frame{\titlepage}
-
-\begin{frame}{Reconhecimento Facial com Similaridade de Cossenos}
-  O reconhecimento facial pode ser modelado como uma tarefa de comparação entre vetores:
-  \begin{itemize}
-    \item Cada rosto é representado por um vetor de características (\textit{embedding})
-    \item Vetores são gerados por redes neurais treinadas para extrair feições únicas
-  \end{itemize}
-  A comparação é feita utilizando a \textbf{similaridade de cossenos}.
-\end{frame}
-
-\begin{frame}{O que é a Similaridade de Cossenos?}
-  A \textbf{similaridade de cossenos} mede o ângulo entre dois vetores:
-  \[
-    \cos(\theta) = \frac{\vec{A} \cdot \vec{B}}{ \|\vec{A}\| \cdot \|\vec{B}\| }
-  \]
-  \begin{itemize}
-    \item Varia entre $-1$ (opostos) e $1$ (iguais)
-    \item Se $\cos(\theta) \approx 1$, vetores são semelhantes → rostos parecidos
-  \end{itemize}
-\end{frame}
-
-\begin{frame}{Autenticação com Similaridade de Cossenos}
-  \begin{enumerate}
-    \item A imagem de entrada é convertida em vetor $\vec{A}$
-    \item Vetor $\vec{B}$ é previamente armazenado durante a etapa de registro
-    \item Se $\cos(\vec{A}, \vec{B}) > \tau$, a autenticação é aceita
-  \end{enumerate}
-  \textbf{Nota:} $\tau$ é um limiar definido com base no modelo de IA (ex: 0.7)
-\end{frame}
-
-\begin{frame}{Problemas em Armazenar \textit{Embeddings} Sem Proteção}
-  \textit{Embeddings} faciais são representações vetoriais únicas do rosto de uma pessoa. Armazená-las sem proteção apresenta riscos sérios:
-  \begin{itemize}
-    \item \textbf{Embeddings são identificadores biométricos:} um atacante pode usar \textit{embeddings} roubadas para reconstruir um rosto e se autenticar como outra pessoa
-    \item \textbf{Vazamentos são irreversíveis:} diferente de senhas, as representações vetoriais são insubstituíveis
-  \end{itemize}
-  \pause
-  \textbf{Solução:} usar \textbf{provas de conhecimento zero} para provar correspondência sem expor o vetor.
-\end{frame}
 
 \begin{frame}{O que é uma Prova de Conhecimento Zero?}
 \begin{itemize}
@@ -92,6 +53,45 @@
     \fontsize{8}{10} \selectfont
     \includesvg[width=10cm]{./Imagens/zk_snark.svg}
   \end{figure}
+\end{frame}
+
+\begin{frame}{Reconhecimento Facial com Similaridade de Cossenos}
+  O reconhecimento facial pode ser modelado como uma tarefa de comparação entre vetores:
+  \begin{itemize}
+    \item Cada rosto é representado por um vetor de características (\textit{embedding})
+    \item Vetores são gerados por redes neurais treinadas para extrair feições únicas
+  \end{itemize}
+  A comparação é feita utilizando a \textbf{similaridade de cossenos}.
+\end{frame}
+
+\begin{frame}{O que é a Similaridade de Cossenos?}
+  A \textbf{similaridade de cossenos} mede o ângulo entre dois vetores:
+  \[
+    \cos(\theta) = \frac{\vec{A} \cdot \vec{B}}{ \|\vec{A}\| \cdot \|\vec{B}\| }
+  \]
+  \begin{itemize}
+    \item Varia entre $-1$ (opostos) e $1$ (iguais)
+    \item Se $\cos(\theta) \approx 1$, vetores são semelhantes → rostos parecidos
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Autenticação com Similaridade de Cossenos}
+  \begin{enumerate}
+    \item A imagem de entrada é convertida em vetor $\vec{A}$
+    \item Vetor $\vec{B}$ é previamente armazenado durante a etapa de registro
+    \item Se $\cos(\vec{A}, \vec{B}) > \tau$, a autenticação é aceita
+  \end{enumerate}
+  \textbf{Nota:} $\tau$ é um limiar definido com base no modelo de IA (ex: 0.7)
+\end{frame}
+
+\begin{frame}{Problemas em Armazenar \textit{Embeddings} Sem Proteção}
+  \textit{Embeddings} faciais são representações vetoriais únicas do rosto de uma pessoa. Armazená-las sem proteção apresenta riscos sérios:
+  \begin{itemize}
+    \item \textbf{Embeddings são identificadores biométricos:} um atacante pode usar \textit{embeddings} roubadas para reconstruir um rosto e se autenticar como outra pessoa
+    \item \textbf{Vazamentos são irreversíveis:} diferente de senhas, as representações vetoriais são insubstituíveis
+  \end{itemize}
+  \pause
+  \textbf{Solução:} usar \textbf{provas de conhecimento zero} para provar correspondência sem expor o vetor.
 \end{frame}
 
 \begin{frame}{Integração com Provas de Conhecimento Zero}

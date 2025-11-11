@@ -11,6 +11,9 @@
 *.toc
 *.loalgorithm
 *.lot
+*.nav
+*.out
+*snm
 
 Main-logo.pdf
 svg-inkscape/
