@@ -1,17 +1,158 @@
-\documentclass[aspectratio=169]{beamer}
+\documentclass[t]{beamer}
+\usepackage[portuges]{babel}
 \usepackage[utf8]{inputenc}
-\usepackage{amsmath, amsfonts}
-\usepackage{tikz}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{amsthm}
 \usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage[scaled]{helvet}
 \usepackage{svg}
+\renewcommand{\familydefault}{\sfdefault}
 
-\title{Provas de Conhecimento Zero: Um Estudo sobre zk-SNARKs e sua Aplicação em Sistemas de Autenticação}
-\author{Alex Davis Neuwiem da Silva}
-\date{Novembro de 2025}
+%%%
+%%% Define cores
+%%%
+\definecolor{cinza}{HTML}{75818B}
 
+%%%
+%%% Remove a barra de navegação do Beamer
+%%%
+\setbeamertemplate{navigation symbols}{}
+
+%%%
+%%% Margem dos slides
+%%%
+\setbeamersize{text margin left=10mm,text margin right=5mm} 
+
+%%%
+%%% Redefine a fonte do título dos slides
+%%%
+\setbeamercolor{frametitle}{fg=cinza}
+\setbeamerfont{frametitle}{series=\bfseries}
+\setbeamerfont{frametitle}{size=\Large}
+
+%%%
+%%% Ajusta a posição do título dos slides e início do texto
+%%%
+\addtobeamertemplate{frametitle}{\vspace*{2mm}}{\vspace*{5mm}}
+
+%%%
+%%% Adiciona paginação nos slides
+%%%
+%%% Caso não queira, basta comentar este bloco inteiro
+%%% para ocultar a paginação
+%%%
+\addtobeamertemplate{navigation symbols}{}{
+\usebeamerfont{footline}
+\usebeamercolor[fg]{footline}
+}
+\setbeamercolor{footline}{fg=cinza}
+\setbeamerfont{footline}{series=\bfseries}
+\setbeamerfont{footline}{size=\tiny}
+\setbeamertemplate{footline}{
+\usebeamerfont{page number in head}
+\usebeamercolor[fg]{page number in head}
+\hspace{5mm}
+\insertframenumber/\inserttotalframenumber
+\vspace{5mm}
+}
+
+%%%
+%%% Redefine símbolo padrão do itemize
+%%%
+\setbeamertemplate{itemize items}[default]
+
+%%%
+%%% Insere numeração nas figuras
+%%%
+\setbeamertemplate{caption}[numbered]
+
+%%%
+%%% Imagem de fundo a ser usada em todos os slides (exceto
+%%% no primeiro e no último)
+%%%
+\usebackgroundtemplate
+{
+\includegraphics[width=\paperwidth,height=\paperheight]{Imagens/fundo.png}
+}
+
+%%%
+%%% Adiciona slide de "Estrutura"
+%%%
+\AtBeginSection[]{\frame{\frametitle{Estrutura}\tableofcontents
+[current]}}
+
+%%%
+%%% Define fontes e cores do slide de "Estrutura"
+%%%
+\setbeamerfont{section in toc}{series=\bfseries}
+\setbeamercolor{section in toc}{fg=gray}
+\setbeamerfont{section in toc shaded}{series=\mdseries}
+\setbeamercolor{section in toc shaded}{fg=gray!01}
+\setbeamercolor{subsection in toc}{fg=cinza}
+\setbeamercolor{subsection in toc shaded}{fg=gray!60}
+\setbeamercolor{subsubsection in toc}{fg=cinza}
+\setbeamercolor{subsubsection in toc shaded}{fg=gray!60}
+
+\mode<presentation>
+%%%
+%%% Início
+%%%
 \begin{document}
 
-\frame{\titlepage}
+%%%
+%%% Slide da capa
+%%%
+{
+\usebackgroundtemplate{\includegraphics[width=\paperwidth]{Imagens/capa.png}}
+\begin{frame}[plain]
+\vspace{18mm}
+%%%
+%%% Título da Apresentação
+%%%
+\begin{flushright}
+\textcolor{cinza}{\textbf{\large{
+Provas de Conhecimento Zero: Um Estudo sobre zk-SNARKs e sua Aplicação em Sistemas de Autenticação
+}}}
+\end{flushright}
+
+\vspace{-6mm}
+%%%
+%%% Nome do autor
+%%%
+\begin{flushright}
+\textcolor{cinza}{\textbf{\scriptsize{
+Alex Davis Neuwiem da Silva
+}}}
+\end{flushright}
+
+\vspace{-7mm}
+%%%
+%%% Formação | Departamento | Centro
+%%%
+\begin{flushright}
+\textcolor{cinza}{\scriptsize{
+Ciências da Computação | INE | CTC
+}}
+\end{flushright}
+
+
+\end{frame}
+}
+
+%%%
+%%% Demais slides (exceto o slide final)
+%%%
+
+\begin{frame}
+\frametitle{Estrutura}
+\tableofcontents
+\end{frame}
+
+\section{Provas de Conhecimento}
 
 \begin{frame}{O que é uma Prova de Conhecimento Zero?}
 \begin{itemize}
@@ -54,6 +195,8 @@
     \includesvg[width=10cm]{./Imagens/zk_snark.svg}
   \end{figure}
 \end{frame}
+
+\section{Autenticação Biométrica}
 
 \begin{frame}{Reconhecimento Facial com Similaridade de Cossenos}
   O reconhecimento facial pode ser modelado como uma tarefa de comparação entre vetores:
@@ -118,4 +261,38 @@
   \bibliography{Referencias}
 \end{frame}
 
+\section{Exemplo de duas colunas}
+
+\begin{frame}{Texto em duas colunas}
+\begin{columns}[c]
+\begin{column}{.5\textwidth}
+\begin{figure}[!ht]
+\centering
+\includegraphics[scale=.2]{Imagens/logo.png}
+\caption{Legenda da imagem}
+\label{fig:rotulo}
+\end{figure}
+\end{column}
+\begin{column}{.5\textwidth}
+Logo da UFSC na Figura \ref{fig:rotulo}.
+\end{column}
+\end{columns}
+\end{frame}
+
+%%%
+%%% Slide final
+%%%
+{
+\usebackgroundtemplate{\includegraphics[width=\paperwidth]{Imagens/capa.png}}
+\begin{frame}[plain]
+\vspace{15mm}
+\begin{center}
+\textcolor{cinza}{
+\textbf{\Large{Muito obrigado!}}
+}
+\end{center}
+\end{frame}
+}
+
 \end{document}
+
