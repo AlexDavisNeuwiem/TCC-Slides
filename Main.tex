@@ -147,21 +147,122 @@ Ciências da Computação | INE | CTC
 %%% Demais slides (exceto o slide final)
 %%%
 
-\begin{frame}
-\frametitle{Estrutura}
-\tableofcontents
+\begin{frame}{Introdução}
+\begin{columns}[c]
+\begin{column}{.5\textwidth}
+  \textbf{1. Estudo Teórico}
+  \begin{itemize}
+    \item Realizar uma análise aprofundada dos principais protocolos zk-SNARKs.
+    \item Foco em \textbf{Pinocchio} e \textbf{Groth16}.
+  \end{itemize}
+\end{column}
+\begin{column}{.5\textwidth}
+\textbf{2. Aplicação Prática}
+  \begin{itemize}
+    \item Desenvolver de um sistema de autenticação biométrica facial que preserva a privacidade.
+    \item Utiliza \textbf{Groth16}.
+  \end{itemize}
+\end{column}
+\end{columns}
 \end{frame}
 
 \section{Provas de Conhecimento}
 
-\begin{frame}{O que é uma Prova de Conhecimento Zero?}
-\begin{itemize}
-    \item Permitem que uma parte (o provador) demonstre para outra (o verificador) que uma afirmação é verdadeira
-    \item A propriedade de \textbf{conhecimento zero} garante que o verificador seja convencido sem revelar nenhuma informação adicional além da veracidade dessa afirmação
-\end{itemize}
+\begin{frame}{O que é uma Prova de Conhecimento?}
+    
+    É um protocolo computacional entre duas partes:
+    \begin{itemize}
+        \item \textbf{Provador (P):} A parte que alega conhecer uma informação.
+        \item \textbf{Verificador (V):} A parte que valida a alegação.
+    \end{itemize}
+
+    \vspace{0.5cm}
+    Satisfazendo as seguintes propriedades:
+    
+    \begin{itemize}
+        \item \textbf{Completude:} Se P é honesto, V sempre aceitará a prova.
+        \item \textbf{Solidez:} Se P é desonesto, V só aceitará a prova com uma probabilidade negligenciável.
+    \end{itemize}
 \end{frame}
 
-\begin{frame}{Exemplo de uma Prova de Conhecimento Zero}
+\begin{frame}{Formalizando uma prova de conhecimento}
+    \begin{block}{1. "Estar convencido"}
+        \begin{itemize}
+            \item P e V são modelados como máquinas de Turing interativas.
+            %\item Formalmente, é definida uma relação binária $R \subseteq \{0,1\}^{*} \times \{0,1\}^{*}$.
+            \item São definidos o parâmetro público $x$ e a testemunha privada $w$.
+            \item V é "convencido" quando chega em seu estado de aceitação.
+        \end{itemize} 
+    \end{block}
+
+    \begin{block}{2. "Saber algo"}
+        \begin{itemize}
+            \item Se P conhece uma solução válida, então ela pode ser extraída de P.
+            \item \textbf{Extrator de conhecimento:} Dispositivo hipotético capaz de extrair $w$ de P.
+        \end{itemize}
+    \end{block}
+\end{frame}
+
+\begin{frame}{O que é uma Prova de Conhecimento Zero?}
+\begin{itemize}
+    \item A propriedade de \textbf{conhecimento zero} garante que o verificador seja convencido sem revelar nenhuma informação adicional além da veracidade dessa afirmação
+    \item É formalmente definido em termos de um \textbf{simulador}: uma máquina que pode gerar uma prova
+“falsa” sem ter acesso à testemunha real do provador. Se a prova gerada pelo provador real
+for computacionalmente indistinguível da prova gerada pelo simulador, então o verificador não
+aprendeu nada além da verdade da afirmação. (A transcrição da conversa é trivial que um simulador também pode gerá-la)
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Exemplo Interativo: Coloração de Grafos}
+    \begin{itemize}
+        \item \textbf{Objetivo:} O Provador (P) quer provar ao Verificador (V) que conhece uma coloração de três cores válida para um grafo $G$, sem revelar tal coloração.
+        \item \textbf{Protocolo:}
+        \begin{enumerate}
+            \item \textbf{Compromisso:} P permuta aleatoriamente as cores ($\pi$), criptografa a cor de cada vértice ($F_v = f(\pi(\phi(v)), r_v)$) e envia todos os $F_v$ para V.
+            \item \textbf{Desafio:} V escolhe uma aresta aleatória $(u, v)$ e a envia para P.
+            \item \textbf{Resposta:} P revela as cores permutadas $\pi(\phi(u))$, $\pi(\phi(v))$ e as chaves de criptografia $r_u, r_v$.
+            \item \textbf{Verificação:} V checa se as chaves abrem os compromissos $F_u, F_v$ e se $\pi(\phi(u)) \neq \pi(\phi(v))$.
+        \end{enumerate}
+        \item O processo é repetido $m^2$ vezes para garantir a solidez.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Propriedades da Prova Interativa}
+    \begin{itemize}
+        \item \textbf{Completude:} Se P conhece a coloração e segue o protocolo, V sempre aceitará a prova.
+        \item \textbf{Solidez:} Se P não conhece a coloração, V irá rejeitar com alta probabilidade.
+        \item \textbf{Conhecimento Zero:} V não aprende nada sobre a coloração. A permutação aleatória $\pi$ a cada rodada garante que as cores reveladas não tenham correlação com a coloração original de P.
+    \end{itemize}
+    \pause
+    \textbf{Problema:} Este protocolo é \textbf{interativo}. Requer múltiplas rodadas de comunicação e é modelado especificamente para um único problema.
+\end{frame}
+
+\section{zk-SNARKs}
+
+\begin{frame}{O que é um zk-SNARK?}
+    Uma classe especial de Prova de Conhecimento Zero:
+    \begin{itemize}        
+        \item \textbf{S}uccinct (Sucinto):
+        \begin{itemize}
+            \item A prova é muito pequena (tamanho constante ou logarítmico).
+            \item A verificação é muito rápida.
+        \end{itemize}
+        
+        \item \textbf{N}on-interactive (Não-interativo):
+        \begin{itemize}
+            \item O Provador envia uma única mensagem para o Verificador.
+            \item Geralmente requer uma Cerimônia de Confiança inicial.
+        \end{itemize}
+        
+        \item \textbf{AR}gument of \textbf{K}nowledge (Argumento de Conhecimento):
+        \begin{itemize}
+            \item A solidez é \textit{computacional} (baseada em problemas difíceis, ex: logaritmo discreto) e não estatística.
+        \end{itemize}
+      
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Exemplo de um circuito}
   Uma \textbf{prova de conhecimento} permite que um provador convença um verificador de que conhece um valor $w$ tal que:
   \[
     C(x,w) = 0
@@ -195,6 +296,10 @@ Ciências da Computação | INE | CTC
     \includesvg[width=10cm]{./Imagens/zk_snark.svg}
   \end{figure}
 \end{frame}
+
+\section{Pinocchio}
+
+\section{Groth16}
 
 \section{Autenticação Biométrica}
 
@@ -259,24 +364,6 @@ Ciências da Computação | INE | CTC
   \nocite{*}
   \bibliographystyle{plain}
   \bibliography{Referencias}
-\end{frame}
-
-\section{Exemplo de duas colunas}
-
-\begin{frame}{Texto em duas colunas}
-\begin{columns}[c]
-\begin{column}{.5\textwidth}
-\begin{figure}[!ht]
-\centering
-\includegraphics[scale=.2]{Imagens/logo.png}
-\caption{Legenda da imagem}
-\label{fig:rotulo}
-\end{figure}
-\end{column}
-\begin{column}{.5\textwidth}
-Logo da UFSC na Figura \ref{fig:rotulo}.
-\end{column}
-\end{columns}
 \end{frame}
 
 %%%
