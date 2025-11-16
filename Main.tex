@@ -167,9 +167,7 @@ Ciências da Computação | INE | CTC
 \end{columns}
 \end{frame}
 
-\section{Provas de Conhecimento}
-
-\begin{frame}{O que é uma Prova de Conhecimento?}
+\begin{frame}{O que é uma Prova de Conhecimento Zero?}
     
     É um protocolo computacional entre duas partes:
     \begin{itemize}
@@ -183,21 +181,8 @@ Ciências da Computação | INE | CTC
     \begin{itemize}
         \item \textbf{Completude:} Se $P$ é honesto, $V$ sempre aceitará a prova.
         \item \textbf{Solidez:} Se $P$ é desonesto, $V$ só aceitará a prova com uma probabilidade negligenciável.
+        \item \textbf{Conhecimento Zero:} Garante que o verificador seja convencido sem revelar nenhuma informação adicional além da veracidade dessa afirmação.
     \end{itemize}
-\end{frame}
-
-\begin{frame}{O que é uma Prova de Conhecimento Zero?}
-    \begin{block}{1. "Saber algo"}
-        \begin{itemize}
-            \item $P$ e $V$ são modelados como máquinas de Turing interativas.
-            \item Se $P$ conhece uma solução válida, então ela pode ser extraída de $P$.
-        \end{itemize}
-    \end{block}
-    \begin{block}{2. ``Conhecimento Zero''}
-        \begin{itemize}
-            \item Garante que o verificador seja convencido sem revelar nenhuma informação adicional além da veracidade dessa afirmação.
-        \end{itemize} 
-    \end{block}
 \end{frame}
 
 \section{zk-SNARKs}
@@ -224,32 +209,12 @@ Ciências da Computação | INE | CTC
     \end{itemize}
 \end{frame}
 
-\begin{frame}{Exemplo de um circuito}
-  Um circuito \textbf{zk-SNARK} pode ser modelado da seguinte forma:
-  \[
-    C(x,w) = 0
-  \]
-  Onde:
-  \begin{itemize}
-    \item $C$ é o circuito da condição a ser satisfeita
-    \item $x$ é o parâmetro público
-    \item $w$ é o valor privado
-  \end{itemize}
-\end{frame}
-
-\begin{frame}{Pré-processamento do circuito}
-  Cerimônia de Confiança sobre o circuito $C(x,w)$:
-  \[
-    S(C) \rightarrow (S_p, S_v)
-  \]
-  Um algoritmo que gera:
-  \begin{itemize}
-    \item Chave de Prova: $S_p$
-    \item Chave de Verificação: $S_v$
-  \end{itemize}
-\end{frame}
-
 \begin{frame}{Processamento de uma prova}
+  \begin{itemize}
+    \item Circuito $C(x,w) = 0$
+    \item Pré-Processamento $S(C) \rightarrow (S_p, S_v)$
+  \end{itemize}
+  \vspace{0.5cm}
   \begin{figure}[H]
     %\hspace*{-0.75cm}
     \center
@@ -340,16 +305,14 @@ Resultado:
 \end{frame}
 
 \begin{frame}{Aritmetização (QAP)}
-Para usar as propriedades de polinômios, transformamos R1CS em um Programa Aritmético Quadrático (QAP)
+Programa Aritmético Quadrático (QAP): Cada coluna das matrizes é transformada em um polinômio.
 
-\begin{columns}[c] % A opção [c] centraliza as colunas verticalmente
-    
-    % Coluna Esquerda: Matriz C (Mais estreita)
+\begin{columns}[c]
     \begin{column}{0.3\textwidth}
         \[
         \begin{array}{c}
              [1, y, x, v_1, v_2] \\
-             \left[ \begin{array}{c c c c c} % Um novo array com 5 colunas
+             \left[ \begin{array}{c c c c c}
                 0 & 0 & 0 & 1 & 0 \\
                 0 & 0 & 0 & 0 & 1 \\
                 0 & 1 & 0 & 0 & 0
@@ -359,7 +322,6 @@ Para usar as propriedades de polinômios, transformamos R1CS em um Programa Arit
         \]
     \end{column}
     
-    % Coluna Central: Polinômios (Mais larga)
     \begin{column}{0.4\textwidth}
     \[
     \begin{aligned}
@@ -372,7 +334,6 @@ Para usar as propriedades de polinômios, transformamos R1CS em um Programa Arit
     \]
     \end{column}
 
-    % Coluna Direita: Matriz de Coeficientes (Média)
     \begin{column}{0.3\textwidth}
     \[
     \begin{array}{c}
@@ -561,6 +522,118 @@ e(\textcolor{red}{A}, \textcolor{red}{B}) = e(\textcolor{blue}{\alpha \cdot g_1}
     \item \textbf{Privacidade Total:} o verificador não sabe quem é o usuário, apenas verifica se a prova é válida.
     \item \textbf{Resistência a Vazamentos:} nenhum dado biométrico é armazenado no sistema, por isso não há o que ser vazado ou roubado.
   \end{itemize}
+\end{frame}
+
+\begin{frame}{Fase de registro}
+\begin{enumerate}
+  \item O Usuário $U$ inicia o processo de registro enviando sua face $f_{reg}$ para o Modelo de IA $M$:
+\[
+  M \xleftarrow{f_{reg}} U
+\]
+  \item $M$ extrai a \textit{embedding} $e_{reg}$ de $f_{reg}$ ao calcular:
+\[
+  e_{reg} := Emb(f_{reg})
+\]
+  \item $M$ envia a \textit{embedding} $e_{reg}$ para $U$:
+\[
+  M \xrightarrow{e_{reg}} U
+\]
+  \item $U$ gera uma chave simétrica $k$ e criptografa sua \textit{embedding}:
+\[
+  c_{reg} := Enc_k(e_{reg})
+\]
+\end{enumerate}
+\end{frame}
+
+\begin{frame}{Fase de registro}
+\begin{enumerate}
+  \item $U$ envia a \textit{embedding} criptografada $c_{reg}$ para o Servidor $S$:
+\[
+  U \xrightarrow{c_{reg}} S
+\]
+  \item $S$ armazena a \textit{embedding} criptografada $c_{reg}$ e gera um identificador único $id$:
+\[
+  id := GenId()
+\]
+  \item $S$ envia o identificador $id$ para $U$:
+\[
+  U \xleftarrow{id} S
+\]
+\end{enumerate}
+\end{frame}
+
+\begin{frame}{Fase de registro}
+  \begin{figure}[H]
+    \vspace{-1cm}
+    %\hspace*{-0.75cm}
+    \center
+    \fontsize{4}{10} \selectfont
+    \includesvg[width=6cm]{./Imagens/registro.svg}
+  \end{figure}
+\end{frame}
+
+\begin{frame}{Fase de autenticação}
+\begin{enumerate}
+  \item O Usuário $U$ inicia o processo de autenticação ao enviar o identificador $id$ ao Servidor $S$:
+\[
+  U \xrightarrow{id} S
+\]
+  \item $S$ envia a chave de prova $S_p$ e uma cópia da \textit{embedding} criptografada $c_{reg}$, que é correspondente ao $id$ recebido, a $U$:
+\[
+  U \xleftarrow{S_p, c_{reg}} S
+\]
+  \item $U$ descriptografa a \textit{embedding} $e_{reg}$ recebida ao calcular:
+\[
+  e_{reg} := Dec_k(c_{reg})
+\]
+\end{enumerate}
+\end{frame}
+
+\begin{frame}{Fase de autenticação}
+\begin{enumerate}
+  \item $U$ solicita a prova do protocolo zk-SNARK ao enviar a chave de prova $S_p$, a \textit{embedding} recém descriptografada $e_{reg}$ e uma nova captura de sua face $f_{cur}$ para o Modelo de IA $M$:
+\[
+  M \xleftarrow{S_p, e_{reg}, f_{cur}} U
+\]
+  \item $M$ extrai a \textit{embedding} $e_{cur}$ a partir da face $f_{cur}$ e gera a prova zk-SNARK $\pi$ ao computar:
+\[
+  e_{cur} := Emb(f_{cur})
+\]
+\[
+  \pi := Prove(S_p, x = \tau, w = (e_{cur}, e_{reg}))
+\]
+  \item $M$ envia a prova zk-SNARK $\pi$ a $U$:
+\[
+  M \xrightarrow{\pi} U
+\]
+\end{enumerate}
+\end{frame}
+
+\begin{frame}{Fase de autenticação}
+\begin{enumerate}
+  \item $U$ envia a prova zk-SNARK $\pi$ a $S$:
+\[
+  U \xrightarrow{\pi} S
+\]
+  \item $S$ verifica a validade da prova $\pi$ ao calcular:
+\[
+  r := Verify(S_v, x = \tau, \pi)
+\]
+  \item $S$ envia o veredito da autenticação $r$ para $U$:
+\[
+  U \xleftarrow{r} S
+\]
+\end{enumerate}
+\end{frame}
+
+\begin{frame}{Fase de autenticação}
+  \begin{figure}[H]
+    \vspace{-1cm}
+    %\hspace*{-0.75cm}
+    \center
+    \fontsize{4}{10} \selectfont
+    \includesvg[width=6cm]{./Imagens/autenticacao.svg}
+  \end{figure}
 \end{frame}
 
 %%%
