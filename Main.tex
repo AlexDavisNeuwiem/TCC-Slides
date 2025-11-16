@@ -172,70 +172,58 @@ Ciências da Computação | INE | CTC
     
     É um protocolo computacional entre duas partes:
     \begin{itemize}
-        \item \textbf{Provador (P):} A parte que alega conhecer uma informação.
-        \item \textbf{Verificador (V):} A parte que valida a alegação.
+        \item \textbf{Provador $P$:} A parte que alega conhecer uma informação.
+        \item \textbf{Verificador $V$:} A parte que valida a alegação.
     \end{itemize}
 
     \vspace{0.5cm}
     Satisfazendo as seguintes propriedades:
     
     \begin{itemize}
-        \item \textbf{Completude:} Se P é honesto, V sempre aceitará a prova.
-        \item \textbf{Solidez:} Se P é desonesto, V só aceitará a prova com uma probabilidade negligenciável.
+        \item \textbf{Completude:} Se $P$ é honesto, $V$ sempre aceitará a prova.
+        \item \textbf{Solidez:} Se $P$ é desonesto, $V$ só aceitará a prova com uma probabilidade negligenciável.
     \end{itemize}
-\end{frame}
-
-\begin{frame}{Formalizando uma prova de conhecimento}
-    \begin{block}{1. "Estar convencido"}
-        \begin{itemize}
-            \item P e V são modelados como máquinas de Turing interativas.
-            %\item Formalmente, é definida uma relação binária $R \subseteq \{0,1\}^{*} \times \{0,1\}^{*}$.
-            \item São definidos o parâmetro público $x$ e a testemunha privada $w$.
-            \item V é "convencido" quando chega em seu estado de aceitação.
-        \end{itemize} 
-    \end{block}
-
-    \begin{block}{2. "Saber algo"}
-        \begin{itemize}
-            \item Se P conhece uma solução válida, então ela pode ser extraída de P.
-            \item \textbf{Extrator de conhecimento:} Dispositivo hipotético capaz de extrair $w$ de P.
-        \end{itemize}
-    \end{block}
 \end{frame}
 
 \begin{frame}{O que é uma Prova de Conhecimento Zero?}
-\begin{itemize}
-    \item A propriedade de \textbf{conhecimento zero} garante que o verificador seja convencido sem revelar nenhuma informação adicional além da veracidade dessa afirmação
-    \item É formalmente definido em termos de um \textbf{simulador}: uma máquina que pode gerar uma prova
-“falsa” sem ter acesso à testemunha real do provador. Se a prova gerada pelo provador real
-for computacionalmente indistinguível da prova gerada pelo simulador, então o verificador não
-aprendeu nada além da verdade da afirmação. (A transcrição da conversa é trivial que um simulador também pode gerá-la)
-  \end{itemize}
+    \begin{block}{1. "Saber algo"}
+        \begin{itemize}
+            \item $P$ e $V$ são modelados como máquinas de Turing interativas.
+            \item Se $P$ conhece uma solução válida, então ela pode ser extraída de $P$.
+            \item \textbf{Extrator de conhecimento:} Dispositivo hipotético capaz de extrair o segredo de $P$.
+        \end{itemize}
+    \end{block}
+    \begin{block}{2. ``Conhecimento Zero''}
+        \begin{itemize}
+            \item Garante que o verificador seja convencido sem revelar nenhuma informação adicional além da veracidade dessa afirmação.
+            \item Definida em termos de um \textbf{simulador}: A transcrição da conversa é trivial, um simulador também pode gerá-la
+        \end{itemize} 
+    \end{block}
 \end{frame}
 
-\begin{frame}{Exemplo Interativo: Coloração de Grafos}
-    \begin{itemize}
-        \item \textbf{Objetivo:} O Provador (P) quer provar ao Verificador (V) que conhece uma coloração de três cores válida para um grafo $G$, sem revelar tal coloração.
-        \item \textbf{Protocolo:}
-        \begin{enumerate}
-            \item \textbf{Compromisso:} P permuta aleatoriamente as cores ($\pi$), criptografa a cor de cada vértice ($F_v = f(\pi(\phi(v)), r_v)$) e envia todos os $F_v$ para V.
-            \item \textbf{Desafio:} V escolhe uma aresta aleatória $(u, v)$ e a envia para P.
-            \item \textbf{Resposta:} P revela as cores permutadas $\pi(\phi(u))$, $\pi(\phi(v))$ e as chaves de criptografia $r_u, r_v$.
-            \item \textbf{Verificação:} V checa se as chaves abrem os compromissos $F_u, F_v$ e se $\pi(\phi(u)) \neq \pi(\phi(v))$.
-        \end{enumerate}
-        \item O processo é repetido $m^2$ vezes para garantir a solidez.
-    \end{itemize}
-\end{frame}
+% \begin{frame}{Exemplo Interativo: Coloração de Grafos}
+%     \begin{itemize}
+%         \item \textbf{Objetivo:} O Provador (P) quer provar ao Verificador (V) que conhece uma coloração de três cores válida para um grafo $G$, sem revelar tal coloração.
+%         \item \textbf{Protocolo:}
+%         \begin{enumerate}
+%             \item \textbf{Compromisso:} P permuta aleatoriamente as cores ($\pi$), criptografa a cor de cada vértice ($F_v = f(\pi(\phi(v)), r_v)$) e envia todos os $F_v$ para V.
+%             \item \textbf{Desafio:} V escolhe uma aresta aleatória $(u, v)$ e a envia para P.
+%             \item \textbf{Resposta:} P revela as cores permutadas $\pi(\phi(u))$, $\pi(\phi(v))$ e as chaves de criptografia $r_u, r_v$.
+%             \item \textbf{Verificação:} V checa se as chaves abrem os compromissos $F_u, F_v$ e se $\pi(\phi(u)) \neq \pi(\phi(v))$.
+%         \end{enumerate}
+%         \item O processo é repetido $m^2$ vezes para garantir a solidez.
+%     \end{itemize}
+% \end{frame}
 
-\begin{frame}{Propriedades da Prova Interativa}
-    \begin{itemize}
-        \item \textbf{Completude:} Se P conhece a coloração e segue o protocolo, V sempre aceitará a prova.
-        \item \textbf{Solidez:} Se P não conhece a coloração, V irá rejeitar com alta probabilidade.
-        \item \textbf{Conhecimento Zero:} V não aprende nada sobre a coloração. A permutação aleatória $\pi$ a cada rodada garante que as cores reveladas não tenham correlação com a coloração original de P.
-    \end{itemize}
-    \pause
-    \textbf{Problema:} Este protocolo é \textbf{interativo}. Requer múltiplas rodadas de comunicação e é modelado especificamente para um único problema.
-\end{frame}
+% \begin{frame}{Propriedades da Prova Interativa}
+%     \begin{itemize}
+%         \item \textbf{Completude:} Se P conhece a coloração e segue o protocolo, V sempre aceitará a prova.
+%         \item \textbf{Solidez:} Se P não conhece a coloração, V irá rejeitar com alta probabilidade.
+%         \item \textbf{Conhecimento Zero:} V não aprende nada sobre a coloração. A permutação aleatória $\pi$ a cada rodada garante que as cores reveladas não tenham correlação com a coloração original de P.
+%     \end{itemize}
+%     \pause
+%     \textbf{Problema:} Este protocolo é \textbf{interativo}. Requer múltiplas rodadas de comunicação e é modelado especificamente para um único problema.
+% \end{frame}
 
 \section{zk-SNARKs}
 
@@ -244,14 +232,13 @@ aprendeu nada além da verdade da afirmação. (A transcrição da conversa é t
     \begin{itemize}        
         \item \textbf{S}uccinct (Sucinto):
         \begin{itemize}
-            \item A prova é muito pequena (tamanho constante ou logarítmico).
-            \item A verificação é muito rápida.
+            \item O tamanho da prova e tempo de verificação são constantes.
         \end{itemize}
         
         \item \textbf{N}on-interactive (Não-interativo):
         \begin{itemize}
             \item O Provador envia uma única mensagem para o Verificador.
-            \item Geralmente requer uma Cerimônia de Confiança inicial.
+            \item Geralmente requer uma cerimônia inicial.
         \end{itemize}
         
         \item \textbf{AR}gument of \textbf{K}nowledge (Argumento de Conhecimento):
@@ -263,7 +250,7 @@ aprendeu nada além da verdade da afirmação. (A transcrição da conversa é t
 \end{frame}
 
 \begin{frame}{Exemplo de um circuito}
-  Uma \textbf{prova de conhecimento} permite que um provador convença um verificador de que conhece um valor $w$ tal que:
+  Um circuito \textbf{zk-SNARK} pode ser modelado da seguinte forma:
   \[
     C(x,w) = 0
   \]
@@ -273,7 +260,6 @@ aprendeu nada além da verdade da afirmação. (A transcrição da conversa é t
     \item $x$ é o parâmetro público
     \item $w$ é o valor privado
   \end{itemize}
-  A propriedade \textbf{conhecimento zero} garante que o verificador não aprende nada sobre $w$
 \end{frame}
 
 \begin{frame}{Pré-processamento do circuito}
@@ -297,9 +283,249 @@ aprendeu nada além da verdade da afirmação. (A transcrição da conversa é t
   \end{figure}
 \end{frame}
 
-\section{Pinocchio}
-
 \section{Groth16}
+
+\begin{frame}{Criptografia Homomórfica}
+$\mathbb{G}_1$, $\mathbb{G}_2$, $\mathbb{G}_T$ são grupos de pontos de curva elíptica.
+  \begin{itemize}
+      \item Emparelhamento $e: \mathbb{G}_1 \times \mathbb{G}_2 \rightarrow \mathbb{G}_T$
+      \item $g_1$ é gerador para $\mathbb{G}_1$
+      \item $g_2$ é gerador para $\mathbb{G}_2$
+      \item $e(g_1, g_2)$ é o gerador de $\mathbb{G}_T$
+  \end{itemize}
+
+\vspace{0.5cm}
+Propriedades:
+  \begin{itemize}
+      \item Dado $s \cdot g_1$ é difícil encontrar $s$
+      \item $e(s_1 \cdot g_1, s_2 \cdot g_2) = e(g_1, g_2)^{(s_1 \cdot s_2)}$
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Groth16: O Padrão de Eficiência}
+  O Groth16 é uma otimização do protocolo Pinocchio, tornando-se o padrão da indústria.
+  \begin{block}{Sua principal vantagem é a otimização:}
+  \begin{itemize}
+    \item Reduz a prova a apenas \textbf{3 elementos}
+    \item Reduz a verificação a apenas \textbf{3 emparelhamentos}
+  \end{itemize}
+  \end{block}
+  \begin{block}{É dividido em 4 etapas:}
+  \begin{itemize}
+    \item Aritmetização
+    \item Cerimônia de confiança
+    \item Geração da prova
+    \item Verificação da prova
+  \end{itemize}
+  \end{block}
+\end{frame}
+
+\begin{frame}{Aritmetização (Circuito Aritmético)}
+Transforma a computação em uma representação matemática verificável
+\begin{itemize}
+    \item Exemplo $x^3 + x + 5 = y$
+\end{itemize}
+
+\[
+x^3 + x + 5 = y
+\quad \rightarrow \quad
+\underbrace{
+  \begin{aligned}
+      v_1 &= x * x \\
+      v_2 &= v_1 * x \\
+      y &= (v_2 + x + 5) * 1
+  \end{aligned}
+}_{\text{Restrições}},
+\quad \underbrace{w = [1, y, x, v_1, v_2]}_{\text{Vetor testemunha}}
+\]
+\end{frame}
+
+
+\begin{frame}{Aritmetização (R1CS)}
+Cada restrição $i$ é representada na forma $w \cdot A_i \times w \cdot B_i = w \cdot C_i$
+\[
+v_1 = x * x \quad \rightarrow \quad
+\begin{aligned}
+  w \cdot A_1 &= [1, y, x, v_1, v_2] \cdot [0, 0, 1, 0, 0] = x \\
+  w \cdot B_1 &= [1, y, x, v_1, v_2] \cdot [0, 0, 1, 0, 0] = x \\
+  w \cdot C_1 &= [1, y, x, v_1, v_2] \cdot [0, 0, 0, 1, 0] = v_1
+\end{aligned}
+\]
+
+Resultado:
+\[
+\begin{array}{ccc}
+  {[0, 0, 1, 0, 0]} & {[0, 0, 1, 0, 0]} & {[0, 0, 0, 1, 0]} \\
+  {[0, 0, 0, 1, 0]} & {[0, 0, 1, 0, 0]} & {[0, 0, 0, 0, 1]} \\
+  {[5, 0, 1, 0, 1]} & {[1, 0, 0, 0, 0]} & {[0, 1, 0, 0, 0]} \\
+    A & B & C \\
+    (\text{entrada esq.}) & (\text{entrada dir.}) & (\text{saída})
+\end{array}
+\]
+\end{frame}
+
+\begin{frame}{Aritmetização (QAP)}
+Para usar as propriedades de polinômios, transformamos R1CS em um Programa Aritmético Quadrático (QAP)
+
+\begin{columns}[c] % A opção [c] centraliza as colunas verticalmente
+    
+    % Coluna Esquerda: Matriz C (Mais estreita)
+    \begin{column}{0.3\textwidth}
+        \[
+        \begin{array}{c}
+             [1, y, x, v_1, v_2] \\
+             \left[ \begin{array}{c c c c c} % Um novo array com 5 colunas
+                0 & 0 & 0 & 1 & 0 \\
+                0 & 0 & 0 & 0 & 1 \\
+                0 & 1 & 0 & 0 & 0
+            \end{array} \right] \\
+             C
+        \end{array}
+        \]
+    \end{column}
+    
+    % Coluna Central: Polinômios (Mais larga)
+    \begin{column}{0.4\textwidth}
+    \[
+    \begin{aligned}
+         O_1(x) &= 0 \\
+         O_y(x) &= 0.5x^2 - 1.5x + 1 \\
+         O_x(x) &= 0 \\
+         O_{v_1}(x) &= 0.5x^2 - 2.5x + 3 \\
+         O_{v_2}(x) &= -x^2 + 4x - 3
+    \end{aligned}
+    \]
+    \end{column}
+
+    % Coluna Direita: Matriz de Coeficientes (Média)
+    \begin{column}{0.3\textwidth}
+    \[
+    \begin{array}{c}
+    \left[ \begin{array}{r r r}
+         0 &  0   & 0 \\
+         1 & -1.5 & 0.5 \\
+         0 &  0   & 0  \\
+         3 & -2.5 & 0.5 \\
+        -3 &  4   & -1 
+    \end{array} \right] \\
+    O(x)
+    \end{array}
+    \]
+    \end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Aritmetização (QAP)}
+Polinômios resultantes do QAP:
+\vspace{0.5cm}
+
+\begin{columns}[c]
+    \begin{column}{0.33\textwidth}
+    \centering $L(x)$
+     \[
+    \left[ \begin{array}{r r r}
+       5 & -7.5 & 2.5 \\
+       0 & 0 & 0 \\
+       4 & -4   & 1  \\
+      -3 & 4 & -1  \\
+       1 & -1.5 & 0.5
+    \end{array} \right]
+    \]
+    \end{column}
+    
+    \begin{column}{0.33\textwidth}
+    \centering $R(x)$
+     \[
+    \left[ \begin{array}{r r r}
+         1 & -1.5 & 0.5 \\
+         0 & 0    & 0 \\
+         0 & 1.5  & -0.5 \\
+         0 & 0    & 0 \\
+         0 & 0    & 0
+    \end{array} \right]
+    \]
+    \end{column}
+
+    \begin{column}{0.33\textwidth}
+    \centering $O(x)$
+    \[
+    \left[ \begin{array}{r r r}
+         0 &  0   & 0 \\
+         1 & -1.5 & 0.5 \\
+         0 &  0   & 0  \\
+         3 & -2.5 & 0.5 \\
+        -3 &  4   & -1 
+    \end{array} \right]
+    \]
+    \end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Aritmetização}
+
+Finalmente chegamos a uma fórmula simples:
+\[
+  w \cdot L(x) \times w \cdot R(x) = w \cdot O(x)
+\]
+    
+Para uma entrada $w$ válida, a equação se sustenta:
+\[
+  P(x) = w \cdot L(x) \times w \cdot R(x) - w \cdot O(x) = H(x) \times T(x)
+\]
+
+Em nosso exemplo, temos:
+\[
+  T(x) = (x-1)(x-2)(x-3)
+\]
+\end{frame}
+
+\begin{frame}{A Otimização Chave do Groth16}
+A equação é reestruturada usando os valores aleatórios $\alpha$ e $\beta$:
+\begin{align*}
+( &\alpha + w \cdot L(x)) \times (\beta + w \cdot R(x)) = \\
+&\alpha \cdot \beta + \alpha \cdot w \cdot R(x) + \beta \cdot w \cdot L(x) + w \cdot L(x) \times w \cdot R(x)
+\end{align*}
+
+Falar do $\tau$ e lema de Lema de Schwartz-Zippel
+\begin{align*}
+& e(\underbrace{ \left( \alpha + w \cdot L(\tau) \right) \cdot g_1 }_{A},
+\underbrace{ \left( \beta + w \cdot R(\tau) \right) \cdot g_2 }_{B}) = \\
+& \underbrace{e(\alpha \cdot g_1, \beta \cdot g_2)}_{D} \cdot \\
+& e(\underbrace{\left( \alpha \cdot w \cdot R(\tau) + \beta \cdot w \cdot L(\tau) + w \cdot O(\tau) + H(\tau) \cdot T(\tau) \right)}_{C}, g_2)
+\end{align*}
+
+\end{frame}
+
+\begin{frame}{Cerimônia de Confiança}
+  O Groth16 usa uma cerimônia de confiança \textbf{específica do circuito} para gerar parâmetros públicos.
+  \begin{itemize}
+    \item Baseia-se em valores aleatórios secretos (``lixo tóxico''): $\alpha, \beta, \tau, \gamma, \delta$.
+    \item Estes valores devem ser descartados. Se guardados, podem criar provas falsas.
+    \item A cerimônia gera a Chave de Prova ($S_p$) e a Chave de Verificação ($S_v$).
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Geração da Prova}
+Para garantir o \textbf{conhecimento zero}, o provador mascara os componentes da prova, gerando dois escalares aleatórios, $r$ e $s$.
+\begin{align*}
+A &= \alpha \cdot g_1 + \sum_{i=0}^{m-1} w_i \cdot L_i(\tau) \cdot g_1 + r \cdot \delta \cdot g_1 \\
+B' &= \beta \cdot g_1 + \sum_{i=0}^{m-1} w_i \cdot R_i(\tau) \cdot g_1 + s \cdot \delta \cdot g_1 \\
+B &= \beta\cdot g_2 + \sum_{i=0}^{m-1} w_i \cdot R_i(\tau) \cdot g_2 + s \cdot \delta \cdot g_2 \\
+C &= \sum_{i=l}^{m-1} w_i \cdot \sigma_i + H(\tau) \cdot T(\tau) + s \cdot A + r \cdot B' - r \cdot s \cdot \delta \cdot g_1 
+\end{align*}
+\end{frame}
+
+\begin{frame}{Verificação da Prova}
+Primeiramente, o verificador utiliza a parte pública da testemunha $\phi$ e $\sigma_0, \dots, \sigma_{l-1}$ para calcular $W$:
+\[
+W = \sum_{i=0}^{l - 1} w_i \cdot \sigma_i
+\]
+
+O verificador então insere a prova $\pi$, sua parte calculada $W$, e os elementos da chave de verificação na equação:
+\[
+e(A, B) = e(\alpha \cdot g_1, \beta \cdot g_2) \cdot e(W, \gamma \cdot g_2) \cdot e(C, \delta \cdot g_2)
+\]
+\end{frame}
 
 \section{Autenticação Biométrica}
 
@@ -358,12 +584,6 @@ aprendeu nada além da verdade da afirmação. (A transcrição da conversa é t
     \item \textbf{Privacidade Total:} o verificador não sabe quem é o usuário, apenas verifica se a prova é válida.
     \item \textbf{Resistência a Vazamentos:} nenhum dado biométrico é armazenado no sistema, por isso não há o que ser vazado ou roubado.
   \end{itemize}
-\end{frame}
-
-\begin{frame}{Referências}
-  \nocite{*}
-  \bibliographystyle{plain}
-  \bibliography{Referencias}
 \end{frame}
 
 %%%
