@@ -10,6 +10,7 @@
 \usepackage{xcolor}
 \usepackage[scaled]{helvet}
 \usepackage{svg}
+\usepackage{xcolor}
 \renewcommand{\familydefault}{\sfdefault}
 
 %%%
@@ -190,40 +191,14 @@ Ciências da Computação | INE | CTC
         \begin{itemize}
             \item $P$ e $V$ são modelados como máquinas de Turing interativas.
             \item Se $P$ conhece uma solução válida, então ela pode ser extraída de $P$.
-            \item \textbf{Extrator de conhecimento:} Dispositivo hipotético capaz de extrair o segredo de $P$.
         \end{itemize}
     \end{block}
     \begin{block}{2. ``Conhecimento Zero''}
         \begin{itemize}
             \item Garante que o verificador seja convencido sem revelar nenhuma informação adicional além da veracidade dessa afirmação.
-            \item Definida em termos de um \textbf{simulador}: A transcrição da conversa é trivial, um simulador também pode gerá-la
         \end{itemize} 
     \end{block}
 \end{frame}
-
-% \begin{frame}{Exemplo Interativo: Coloração de Grafos}
-%     \begin{itemize}
-%         \item \textbf{Objetivo:} O Provador (P) quer provar ao Verificador (V) que conhece uma coloração de três cores válida para um grafo $G$, sem revelar tal coloração.
-%         \item \textbf{Protocolo:}
-%         \begin{enumerate}
-%             \item \textbf{Compromisso:} P permuta aleatoriamente as cores ($\pi$), criptografa a cor de cada vértice ($F_v = f(\pi(\phi(v)), r_v)$) e envia todos os $F_v$ para V.
-%             \item \textbf{Desafio:} V escolhe uma aresta aleatória $(u, v)$ e a envia para P.
-%             \item \textbf{Resposta:} P revela as cores permutadas $\pi(\phi(u))$, $\pi(\phi(v))$ e as chaves de criptografia $r_u, r_v$.
-%             \item \textbf{Verificação:} V checa se as chaves abrem os compromissos $F_u, F_v$ e se $\pi(\phi(u)) \neq \pi(\phi(v))$.
-%         \end{enumerate}
-%         \item O processo é repetido $m^2$ vezes para garantir a solidez.
-%     \end{itemize}
-% \end{frame}
-
-% \begin{frame}{Propriedades da Prova Interativa}
-%     \begin{itemize}
-%         \item \textbf{Completude:} Se P conhece a coloração e segue o protocolo, V sempre aceitará a prova.
-%         \item \textbf{Solidez:} Se P não conhece a coloração, V irá rejeitar com alta probabilidade.
-%         \item \textbf{Conhecimento Zero:} V não aprende nada sobre a coloração. A permutação aleatória $\pi$ a cada rodada garante que as cores reveladas não tenham correlação com a coloração original de P.
-%     \end{itemize}
-%     \pause
-%     \textbf{Problema:} Este protocolo é \textbf{interativo}. Requer múltiplas rodadas de comunicação e é modelado especificamente para um único problema.
-% \end{frame}
 
 \section{zk-SNARKs}
 
@@ -477,16 +452,18 @@ Em nosso exemplo, temos:
 \[
   T(x) = (x-1)(x-2)(x-3)
 \]
+
+Note que L(x), R(x), O(x) e T(x) são públicos e apenas um provador honesto pode gerar P(x) e H(x).
 \end{frame}
 
 \begin{frame}{A Otimização Chave do Groth16}
 A equação é reestruturada usando os valores aleatórios $\alpha$ e $\beta$:
 \begin{align*}
 ( &\alpha + w \cdot L(x)) \times (\beta + w \cdot R(x)) = \\
-&\alpha \cdot \beta + \alpha \cdot w \cdot R(x) + \beta \cdot w \cdot L(x) + w \cdot L(x) \times w \cdot R(x)
+&\alpha \cdot \beta + \alpha \cdot w \cdot R(x) + \beta \cdot w \cdot L(x) + w \cdot O(\tau) + H(\tau) \cdot T(\tau)
 \end{align*}
 
-Falar do $\tau$ e lema de Lema de Schwartz-Zippel
+Verificação no ponto $\tau$, pelo lema de Schwartz-Zippel:
 \begin{align*}
 & e(\underbrace{ \left( \alpha + w \cdot L(\tau) \right) \cdot g_1 }_{A},
 \underbrace{ \left( \beta + w \cdot R(\tau) \right) \cdot g_2 }_{B}) = \\
@@ -508,22 +485,22 @@ Falar do $\tau$ e lema de Lema de Schwartz-Zippel
 \begin{frame}{Geração da Prova}
 Para garantir o \textbf{conhecimento zero}, o provador mascara os componentes da prova, gerando dois escalares aleatórios, $r$ e $s$.
 \begin{align*}
-A &= \alpha \cdot g_1 + \sum_{i=0}^{m-1} w_i \cdot L_i(\tau) \cdot g_1 + r \cdot \delta \cdot g_1 \\
-B' &= \beta \cdot g_1 + \sum_{i=0}^{m-1} w_i \cdot R_i(\tau) \cdot g_1 + s \cdot \delta \cdot g_1 \\
-B &= \beta\cdot g_2 + \sum_{i=0}^{m-1} w_i \cdot R_i(\tau) \cdot g_2 + s \cdot \delta \cdot g_2 \\
-C &= \sum_{i=l}^{m-1} w_i \cdot \sigma_i + H(\tau) \cdot T(\tau) + s \cdot A + r \cdot B' - r \cdot s \cdot \delta \cdot g_1 
+A &= \textcolor{red}{\alpha \cdot g_1} + \sum_{i=0}^{m-1} w_i \cdot \textcolor{red}{L_i(\tau) \cdot g_1} + r \cdot \textcolor{red}{\delta \cdot g_1} \\
+B' &= \textcolor{red}{\beta \cdot g_1} + \sum_{i=0}^{m-1} w_i \cdot \textcolor{red}{R_i(\tau) \cdot g_1} + s \cdot \textcolor{red}{\delta \cdot g_1} \\
+B &= \textcolor{red}{\beta \cdot g_2} + \sum_{i=0}^{m-1} w_i \cdot \textcolor{red}{R_i(\tau) \cdot g_2} + s \cdot \textcolor{red}{\delta \cdot g_2} \\
+C &= \sum_{i=l}^{m-1} w_i \cdot \textcolor{red}{\sigma_i} + H(\tau) \cdot \textcolor{red}{T(\tau)} + s \cdot A + r \cdot B' - r \cdot s \cdot \textcolor{red}{\delta \cdot g_1} 
 \end{align*}
 \end{frame}
 
 \begin{frame}{Verificação da Prova}
-Primeiramente, o verificador utiliza a parte pública da testemunha $\phi$ e $\sigma_0, \dots, \sigma_{l-1}$ para calcular $W$:
+Primeiramente, o verificador utiliza a parte pública da testemunha e $\sigma_0, \dots, \sigma_{l-1}$ para calcular $W$:
 \[
-W = \sum_{i=0}^{l - 1} w_i \cdot \sigma_i
+W = \sum_{i=0}^{l - 1} w_i \cdot \textcolor{blue}{\sigma_i}
 \]
 
 O verificador então insere a prova $\pi$, sua parte calculada $W$, e os elementos da chave de verificação na equação:
 \[
-e(A, B) = e(\alpha \cdot g_1, \beta \cdot g_2) \cdot e(W, \gamma \cdot g_2) \cdot e(C, \delta \cdot g_2)
+e(\textcolor{red}{A}, \textcolor{red}{B}) = e(\textcolor{blue}{\alpha \cdot g_1}, \textcolor{blue}{\beta \cdot g_2}) \cdot e(W, \textcolor{blue}{\gamma \cdot g_2}) \cdot e(\textcolor{red}{C}, \textcolor{blue}{\delta \cdot g_2})
 \]
 \end{frame}
 
