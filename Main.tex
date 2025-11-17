@@ -149,64 +149,45 @@ Ciências da Computação | INE | CTC
 %%%
 
 \begin{frame}{Introdução}
-\begin{columns}[c]
-\begin{column}{.5\textwidth}
-  \textbf{1. Estudo Teórico}
+\textbf{1. Estudo Teórico}
   \begin{itemize}
-    \item Realizar uma análise aprofundada dos principais protocolos zk-SNARKs.
-    \item Foco em \textbf{Pinocchio} e \textbf{Groth16}.
+    \item Foi realizada uma análise aprofundada dos principais protocolos zk-SNARKs: foco em \textbf{Pinocchio} e \textbf{Groth16}.
   \end{itemize}
-\end{column}
-\begin{column}{.5\textwidth}
+
+\vspace{0.5cm}
+
 \textbf{2. Aplicação Prática}
   \begin{itemize}
-    \item Desenvolver de um sistema de autenticação biométrica facial que preserva a privacidade.
-    \item Utiliza \textbf{Groth16}.
+    \item Foi desenvolvido um sistema de autenticação biométrica facial que utiliza um dos protocolos estudados: \textbf{Groth16}.
   \end{itemize}
-\end{column}
-\end{columns}
 \end{frame}
 
-\begin{frame}{O que é uma Prova de Conhecimento Zero?}
-    
-    É um protocolo computacional entre duas partes:
-    \begin{itemize}
-        \item \textbf{Provador $P$:} A parte que alega conhecer uma informação.
-        \item \textbf{Verificador $V$:} A parte que valida a alegação.
-    \end{itemize}
+\begin{frame}{O que é uma Prova de Conhecimento Zero?}    
+É um protocolo computacional entre duas partes:
+  \begin{itemize}
+    \item \textbf{Provador $P$:} A parte que alega conhecer uma informação.
+    \item \textbf{Verificador $V$:} A parte que valida a alegação.
+  \end{itemize}
 
-    \vspace{0.5cm}
-    Satisfazendo as seguintes propriedades:
-    
-    \begin{itemize}
-        \item \textbf{Completude:} Se $P$ é honesto, $V$ sempre aceitará a prova.
-        \item \textbf{Solidez:} Se $P$ é desonesto, $V$ só aceitará a prova com uma probabilidade negligenciável.
-        \item \textbf{Conhecimento Zero:} Garante que o verificador seja convencido sem revelar nenhuma informação adicional além da veracidade dessa afirmação.
-    \end{itemize}
+\vspace{0.5cm}
+
+Satisfaz as seguintes propriedades:
+  \begin{itemize}
+    \item \textbf{Completude:} Se $P$ é honesto, $V$ sempre aceitará a prova.
+    \item \textbf{Solidez:} Se $P$ é desonesto, $V$ só aceitará a prova com uma probabilidade negligenciável.
+    \item \textbf{Conhecimento Zero:} Garante que o verificador seja convencido sem revelar nenhuma informação adicional além da veracidade dessa afirmação.
+  \end{itemize}
 \end{frame}
 
 \section{zk-SNARKs}
 
 \begin{frame}{O que é um zk-SNARK?}
-    Uma classe especial de Prova de Conhecimento Zero:
-    \begin{itemize}        
-        \item \textbf{S}uccinct (Sucinto):
-        \begin{itemize}
-            \item O tamanho da prova e tempo de verificação são constantes.
-        \end{itemize}
-        
-        \item \textbf{N}on-interactive (Não-interativo):
-        \begin{itemize}
-            \item O Provador envia uma única mensagem para o Verificador.
-            \item Geralmente requer uma cerimônia inicial.
-        \end{itemize}
-        
-        \item \textbf{AR}gument of \textbf{K}nowledge (Argumento de Conhecimento):
-        \begin{itemize}
-            \item A solidez é \textit{computacional} (baseada em problemas difíceis, ex: logaritmo discreto) e não estatística.
-        \end{itemize}
-      
-    \end{itemize}
+Uma classe especial de Prova de Conhecimento Zero:
+  \begin{itemize}        
+    \item \textbf{S}uccinct (Sucinto): O tamanho da prova e tempo de verificação são constantes.
+    \item \textbf{N}on-interactive (Não-interativo): O Provador envia uma única mensagem para o Verificador, geralmente requer uma cerimônia inicial.
+    \item \textbf{AR}gument of \textbf{K}nowledge (Argumento de Conhecimento): A solidez é \textit{computacional}, baseada na dificuldade de certos problemas, e não estatística.
+  \end{itemize}
 \end{frame}
 
 \begin{frame}{Processamento de uma prova}
