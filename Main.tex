@@ -226,12 +226,13 @@ Ciências da Computação | INE | CTC
 \section{Groth16}
 
 \begin{frame}{Criptografia Homomórfica}
-$\mathbb{G}_1$, $\mathbb{G}_2$, $\mathbb{G}_T$ são grupos de pontos de curva elíptica.
+Fundamenta o ambiente aritmético utilizado no protocolo.
   \begin{itemize}
-      \item Emparelhamento $e: \mathbb{G}_1 \times \mathbb{G}_2 \rightarrow \mathbb{G}_T$
-      \item $g_1$ é gerador para $\mathbb{G}_1$
-      \item $g_2$ é gerador para $\mathbb{G}_2$
-      \item $e(g_1, g_2)$ é o gerador de $\mathbb{G}_T$
+    \item $\mathbb{G}_1$, $\mathbb{G}_2$, $\mathbb{G}_T$ são grupos de pontos de curva elíptica.
+    \item Emparelhamento $e: \mathbb{G}_1 \times \mathbb{G}_2 \rightarrow \mathbb{G}_T$
+    \item $g_1$ é gerador para $\mathbb{G}_1$
+    \item $g_2$ é gerador para $\mathbb{G}_2$
+    \item $e(g_1, g_2)$ é o gerador de $\mathbb{G}_T$
   \end{itemize}
 
 \vspace{0.5cm}
@@ -239,6 +240,7 @@ Propriedades:
   \begin{itemize}
       \item Dado $s \cdot g_1$ é difícil encontrar $s$
       \item $e(s_1 \cdot g_1, s_2 \cdot g_2) = e(g_1, g_2)^{(s_1 \cdot s_2)}$
+      \item Permite que o protocolo funcione para múltiplos $P$s e $V$s.
   \end{itemize}
 \end{frame}
 
@@ -547,6 +549,7 @@ e(\textcolor{red}{A}, \textcolor{red}{B}) = e(\textcolor{blue}{\alpha \cdot g_1}
 
 \begin{frame}{Fase de registro}
 \begin{enumerate}
+  \setcounter{enumi}{4}
   \item $U$ envia a \textit{embedding} criptografada $c_{reg}$ para o Servidor $S$:
 \[
   U \xrightarrow{c_{reg}} S
@@ -562,15 +565,22 @@ e(\textcolor{red}{A}, \textcolor{red}{B}) = e(\textcolor{blue}{\alpha \cdot g_1}
 \end{enumerate}
 \end{frame}
 
+\usebackgroundtemplate{}
+
 \begin{frame}{Fase de registro}
   \begin{figure}[H]
     \vspace{-1cm}
     %\hspace*{-0.75cm}
     \center
     \fontsize{4}{10} \selectfont
-    \includesvg[width=6cm]{./Imagens/registro.svg}
+    \includesvg[width=6.5cm]{./Imagens/registro.svg}
   \end{figure}
 \end{frame}
+
+\usebackgroundtemplate
+{
+\includegraphics[width=\paperwidth,height=\paperheight]{Imagens/fundo.png}
+}
 
 \begin{frame}{Fase de autenticação}
 \begin{enumerate}
@@ -591,6 +601,7 @@ e(\textcolor{red}{A}, \textcolor{red}{B}) = e(\textcolor{blue}{\alpha \cdot g_1}
 
 \begin{frame}{Fase de autenticação}
 \begin{enumerate}
+  \setcounter{enumi}{3}
   \item $U$ solicita a prova do protocolo zk-SNARK ao enviar a chave de prova $S_p$, a \textit{embedding} recém descriptografada $e_{reg}$ e uma nova captura de sua face $f_{cur}$ para o Modelo de IA $M$:
 \[
   M \xleftarrow{S_p, e_{reg}, f_{cur}} U
@@ -611,6 +622,7 @@ e(\textcolor{red}{A}, \textcolor{red}{B}) = e(\textcolor{blue}{\alpha \cdot g_1}
 
 \begin{frame}{Fase de autenticação}
 \begin{enumerate}
+  \setcounter{enumi}{6}
   \item $U$ envia a prova zk-SNARK $\pi$ a $S$:
 \[
   U \xrightarrow{\pi} S
@@ -626,6 +638,8 @@ e(\textcolor{red}{A}, \textcolor{red}{B}) = e(\textcolor{blue}{\alpha \cdot g_1}
 \end{enumerate}
 \end{frame}
 
+\usebackgroundtemplate{}
+
 \begin{frame}{Fase de autenticação}
   \begin{figure}[H]
     \vspace{-1cm}
@@ -635,6 +649,11 @@ e(\textcolor{red}{A}, \textcolor{red}{B}) = e(\textcolor{blue}{\alpha \cdot g_1}
     \includesvg[width=6cm]{./Imagens/autenticacao.svg}
   \end{figure}
 \end{frame}
+
+\usebackgroundtemplate
+{
+\includegraphics[width=\paperwidth,height=\paperheight]{Imagens/fundo.png}
+}
 
 %%%
 %%% Slide final
