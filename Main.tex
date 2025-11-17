@@ -11,6 +11,7 @@
 \usepackage[scaled]{helvet}
 \usepackage{svg}
 \usepackage{xcolor}
+\usepackage{booktabs}
 \renewcommand{\familydefault}{\sfdefault}
 
 %%%
@@ -206,22 +207,20 @@ Uma classe especial de Prova de Conhecimento Zero:
 
 \section{Groth16}
 
-\begin{frame}{Criptografia Homomórfica}
-Fundamenta o ambiente aritmético utilizado no protocolo.
+\begin{frame}{Criptografia de Curvas Elípticas}
+Fundamentam o ambiente aritmético utilizado no protocolo:
   \begin{itemize}
-    \item $\mathbb{G}_1$, $\mathbb{G}_2$, $\mathbb{G}_T$ são grupos de pontos de curva elíptica.
+    \item $\mathbb{G}_1$, $\mathbb{G}_2$, $\mathbb{G}_T$ são grupos de pontos de curva elíptica
     \item Emparelhamento $e: \mathbb{G}_1 \times \mathbb{G}_2 \rightarrow \mathbb{G}_T$
-    \item $g_1$ é gerador para $\mathbb{G}_1$
-    \item $g_2$ é gerador para $\mathbb{G}_2$
+    \item $g_1$ e $g_2$ são geradores de $\mathbb{G}_1$ e $\mathbb{G}_2$
     \item $e(g_1, g_2)$ é o gerador de $\mathbb{G}_T$
   \end{itemize}
 
-\vspace{0.5cm}
-Propriedades:
+Garantem propriedades:
   \begin{itemize}
-      \item Dado $s \cdot g_1$ é difícil encontrar $s$
-      \item $e(s_1 \cdot g_1, s_2 \cdot g_2) = e(g_1, g_2)^{(s_1 \cdot s_2)}$
-      \item Permite que o protocolo funcione para múltiplos $P$s e $V$s.
+      \item Logaritmo Discreto: Dado $s \cdot g_1$ é difícil encontrar $s$
+      \item Coeficientes do emparelhamento podem ser reorganizados: $e(s_1 \cdot g_1, s_2 \cdot g_2) = e(g_1, g_2)^{(s_1 \cdot s_2)}$
+      \item Permite que o protocolo funcione para múltiplos $P$s e $V$s
   \end{itemize}
 \end{frame}
 
@@ -243,12 +242,8 @@ Propriedades:
   \end{block}
 \end{frame}
 
-\begin{frame}{Aritmetização (Circuito Aritmético)}
-Transforma a computação em uma representação matemática verificável
-\begin{itemize}
-    \item Exemplo $x^3 + x + 5 = y$
-\end{itemize}
-
+\begin{frame}{Aritmetização}
+Transforma a computação em uma representação matemática verificável:
 \[
 x^3 + x + 5 = y
 \quad \rightarrow \quad
@@ -261,40 +256,25 @@ x^3 + x + 5 = y
 }_{\text{Restrições}},
 \quad \underbrace{w = [1, y, x, v_1, v_2]}_{\text{Vetor testemunha}}
 \]
-\end{frame}
-
-
-\begin{frame}{Aritmetização (R1CS)}
-Cada restrição $i$ é representada na forma $w \cdot A_i \times w \cdot B_i = w \cdot C_i$
+Cada restrição $i$ é reescrita na combinação $w \cdot A_i \times w \cdot B_i = w \cdot C_i$:
 \[
-v_1 = x * x \quad \rightarrow \quad
-\begin{aligned}
-  w \cdot A_1 &= [1, y, x, v_1, v_2] \cdot [0, 0, 1, 0, 0] = x \\
-  w \cdot B_1 &= [1, y, x, v_1, v_2] \cdot [0, 0, 1, 0, 0] = x \\
-  w \cdot C_1 &= [1, y, x, v_1, v_2] \cdot [0, 0, 0, 1, 0] = v_1
-\end{aligned}
-\]
-
-Resultado:
-\[
-\begin{array}{ccc}
-  {[0, 0, 1, 0, 0]} & {[0, 0, 1, 0, 0]} & {[0, 0, 0, 1, 0]} \\
-  {[0, 0, 0, 1, 0]} & {[0, 0, 1, 0, 0]} & {[0, 0, 0, 0, 1]} \\
-  {[5, 0, 1, 0, 1]} & {[1, 0, 0, 0, 0]} & {[0, 1, 0, 0, 0]} \\
-    A & B & C \\
-    (\text{entrada esq.}) & (\text{entrada dir.}) & (\text{saída})
+\begin{array}{cccccccc}
+ & {[0, 0, 1, 0, 0]} &   &   & {[0, 0, 1, 0, 0]} &   &   & {[0, 0, 0, 1, 0]} \\
+ w \cdot & {[0, 0, 0, 1, 0]} & \times & w \cdot & {[0, 0, 1, 0, 0]} & = & w \cdot & {[0, 0, 0, 0, 1]} \\
+ & {[5, 0, 1, 0, 1]} &   &   & {[1, 0, 0, 0, 0]} &   &   & {[0, 1, 0, 0, 0]} \\
+ & A &   &   & B &   &   & C
 \end{array}
 \]
 \end{frame}
 
-\begin{frame}{Aritmetização (QAP)}
-Programa Aritmético Quadrático (QAP): Cada coluna das matrizes é transformada em um polinômio.
+\begin{frame}{Aritmetização}
+As matrizes que representam a progressão da computação são transformadas em matrizes de polinômios:
 
 \begin{columns}[c]
     \begin{column}{0.3\textwidth}
         \[
         \begin{array}{c}
-             [1, y, x, v_1, v_2] \\
+             [1 \quad y \quad x \quad v_1 \quad v_2] \\
              \left[ \begin{array}{c c c c c}
                 0 & 0 & 0 & 1 & 0 \\
                 0 & 0 & 0 & 0 & 1 \\
@@ -307,13 +287,7 @@ Programa Aritmético Quadrático (QAP): Cada coluna das matrizes é transformada
     
     \begin{column}{0.4\textwidth}
     \[
-    \begin{aligned}
-         O_1(x) &= 0 \\
-         O_y(x) &= 0.5x^2 - 1.5x + 1 \\
-         O_x(x) &= 0 \\
-         O_{v_1}(x) &= 0.5x^2 - 2.5x + 3 \\
-         O_{v_2}(x) &= -x^2 + 4x - 3
-    \end{aligned}
+      \xrightarrow{\text{Interpolação dos pontos } (1, C_1) \dots (i, C_i)}
     \]
     \end{column}
 
@@ -332,10 +306,12 @@ Programa Aritmético Quadrático (QAP): Cada coluna das matrizes é transformada
     \]
     \end{column}
 \end{columns}
+\vspace{0.5cm}
+Analogamente para as matrizes $A$ e $B$, resultando em $L(x)$ e $R(x)$, respectivamente.
 \end{frame}
 
-\begin{frame}{Aritmetização (QAP)}
-Polinômios resultantes do QAP:
+\begin{frame}{Aritmetização}
+Os polinômios resultantes:
 \vspace{0.5cm}
 
 \begin{columns}[c]
@@ -378,21 +354,21 @@ Polinômios resultantes do QAP:
     \]
     \end{column}
 \end{columns}
+\vspace{0.5cm}
+Obedecem à equação:
+\[
+  w \cdot L(x) \times w \cdot R(x) = w \cdot O(x)
+\]
 \end{frame}
 
 \begin{frame}{Aritmetização}
 
-Finalmente chegamos a uma fórmula simples:
-\[
-  w \cdot L(x) \times w \cdot R(x) = w \cdot O(x)
-\]
-    
-Para uma entrada $w$ válida, a equação se sustenta:
+A computação original foi rescrita como uma equação polinomial:
 \[
   P(x) = w \cdot L(x) \times w \cdot R(x) - w \cdot O(x) = H(x) \times T(x)
 \]
 
-Em nosso exemplo, temos:
+Teorema Fundamental da Álgebra: Se $P(x)$ possui raízes $\{1, \dots, n\}$, ele deve ser divisível por cada fator $(x-1) \dots (x - n)$. Em nosso exemplo, temos:
 \[
   T(x) = (x-1)(x-2)(x-3)
 \]
@@ -418,9 +394,9 @@ Verificação no ponto $\tau$, pelo lema de Schwartz-Zippel:
 \end{frame}
 
 \begin{frame}{Cerimônia de Confiança}
-  O Groth16 usa uma cerimônia de confiança \textbf{específica do circuito} para gerar parâmetros públicos.
+  O Groth16 realiza uma cerimônia de confiança \textbf{específica do circuito} para gerar parâmetros públicos.
   \begin{itemize}
-    \item Baseia-se em valores aleatórios secretos (``lixo tóxico''): $\alpha, \beta, \tau, \gamma, \delta$.
+    \item Gera valores aleatórios secretos: $\alpha, \beta, \tau, \gamma, \delta$.
     \item Estes valores devem ser descartados. Se guardados, podem criar provas falsas.
     \item A cerimônia gera a Chave de Prova ($S_p$) e a Chave de Verificação ($S_v$).
   \end{itemize}
@@ -635,6 +611,25 @@ e(\textcolor{red}{A}, \textcolor{red}{B}) = e(\textcolor{blue}{\alpha \cdot g_1}
 {
 \includegraphics[width=\paperwidth,height=\paperheight]{Imagens/fundo.png}
 }
+
+\begin{frame}
+\frametitle{Tempo médio das operações do sistema}
+
+\centering 
+\hspace{-0.65cm}
+\begin{tabular}{lcr} 
+\toprule
+\textbf{Métrica} & \textbf{Tempo Médio (s)} & \textbf{Responsável} \\
+\midrule
+Geração de \textit{embeddings} & 0.31 & Modelo de IA \\
+Geração da FRC & 19.74 & Servidor \\
+Geração da prova & 1.42 & Modelo de IA \\
+Verificação da prova & 0.52 & Servidor \\
+Etapa de registro & 0.39 & Usuário \\
+Etapa de autenticação & 2.27 & Usuário \\
+\bottomrule
+\end{tabular}
+\end{frame}
 
 %%%
 %%% Slide final
