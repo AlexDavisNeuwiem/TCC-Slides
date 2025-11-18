@@ -193,8 +193,8 @@ Uma classe especial de Prova de Conhecimento Zero:
 
 \begin{frame}{Processamento de uma prova}
   \begin{itemize}
-    \item Circuito $C(x,w) = 0$
-    \item Pré-Processamento $S(C) \rightarrow (S_p, S_v)$
+    \item $P$ quer provar conhecimento sobre o circuito $C(x,w) = 0$
+    \item É realizado o pré-processamento $S(C) \rightarrow (S_p, S_v)$
   \end{itemize}
   \vspace{0.5cm}
   \begin{figure}[H]
@@ -215,12 +215,11 @@ Fundamentam o ambiente aritmético utilizado no protocolo:
     \item $g_1$ e $g_2$ são geradores de $\mathbb{G}_1$ e $\mathbb{G}_2$
     \item $e(g_1, g_2)$ é o gerador de $\mathbb{G}_T$
   \end{itemize}
-
+\vspace{0.5cm}
 Garantem propriedades:
   \begin{itemize}
       \item Logaritmo Discreto: Dado $s \cdot g_1$ é difícil encontrar $s$
       \item Coeficientes do emparelhamento podem ser reorganizados: $e(s_1 \cdot g_1, s_2 \cdot g_2) = e(g_1, g_2)^{(s_1 \cdot s_2)}$
-      \item Permite que o protocolo funcione para múltiplos $P$s e $V$s
   \end{itemize}
 \end{frame}
 
@@ -274,7 +273,7 @@ As matrizes que registram a progressão da computação são transformadas em ma
     \begin{column}{0.3\textwidth}
         \[
         \begin{array}{c}
-             [1 \quad y \quad x \quad v_1 \quad v_2] \\
+             1 \quad y \quad x \quad v_1 \quad v_2 \\
              \left[ \begin{array}{c c c c c}
                 0 & 0 & 0 & 1 & 0 \\
                 0 & 0 & 0 & 0 & 1 \\
@@ -294,6 +293,7 @@ As matrizes que registram a progressão da computação são transformadas em ma
     \begin{column}{0.3\textwidth}
     \[
     \begin{array}{c}
+    \quad x^0 \quad \quad x^1 \quad \quad x^2 \\
     \left[ \begin{array}{r r r}
          0 &  0   & 0 \\
          1 & -1.5 & 0.5 \\
