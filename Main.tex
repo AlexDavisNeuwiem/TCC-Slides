@@ -218,8 +218,8 @@ Fundamentam o ambiente aritmético utilizado no protocolo:
 \vspace{0.5cm}
 Garantem propriedades:
   \begin{itemize}
-      \item Logaritmo Discreto: Dado $s \cdot g_1$ é difícil encontrar $s$
-      \item Coeficientes do emparelhamento podem ser reorganizados: $e(s_1 \cdot g_1, s_2 \cdot g_2) = e(g_1, g_2)^{(s_1 \cdot s_2)}$
+      \item Dado \textcolor{blue}{$s \cdot g_1$} ou \textcolor{blue}{$s \cdot g_2$} é difícil encontrar \textcolor{blue}{$s$} (Logaritmo Discreto)
+      \item Coeficientes do emparelhamento podem ser reorganizados: $e(\textcolor{blue}{s_1} \cdot g_1, \textcolor{blue}{s_2} \cdot g_2) = e(g_1, g_2)^{(\textcolor{blue}{s_1 \cdot s_2})}$
   \end{itemize}
 \end{frame}
 
@@ -363,7 +363,7 @@ Obedecem à equação:
 
 \begin{frame}{Aritmetização}
 
-A computação original é rescrita como uma equação polinomial:
+A computação original é reescrita como uma equação polinomial:
 \[
   P(x) = w \cdot L(x) \times w \cdot R(x) - w \cdot O(x) = H(x) \times T(x)
 \]
@@ -379,16 +379,16 @@ Note que L(x), R(x), O(x) e T(x) são públicos e apenas um provador honesto pod
 \begin{frame}{A Otimização Chave do Groth16}
 A equação é reestruturada usando os valores aleatórios $\alpha$ e $\beta$:
 \begin{align*}
-( &\alpha + w \cdot L(x)) \times (\beta + w \cdot R(x)) = \\
-&\alpha \cdot \beta + \alpha \cdot w \cdot R(x) + \beta \cdot w \cdot L(x) + w \cdot O(x) + H(x) \cdot T(x)
+( &\textcolor{red}{\alpha} + w \cdot L(x)) \times (\textcolor{red}{\beta} + w \cdot R(x)) = \\
+&\textcolor{red}{\alpha} \cdot \textcolor{red}{\beta} + \textcolor{red}{\alpha} \cdot w \cdot R(x) + \textcolor{red}{\beta} \cdot w \cdot L(x) + w \cdot O(x) + H(x) \cdot T(x)
 \end{align*}
 
 Verificação com emparelhamentos no ponto $\tau$ (Schwartz-Zippel):
 \begin{align*}
-& e(\underbrace{ \left( \alpha + w \cdot L(\tau) \right) \cdot g_1 }_{A},
-\underbrace{ \left( \beta + w \cdot R(\tau) \right) \cdot g_2 }_{B}) = \\
-& \underbrace{e(\alpha \cdot g_1, \beta \cdot g_2)}_{D} \cdot \\
-& e(\underbrace{\left( \alpha \cdot w \cdot R(\tau) + \beta \cdot w \cdot L(\tau) + w \cdot O(\tau) + H(\tau) \cdot T(\tau) \right)}_{C}, g_2)
+& e(\underbrace{ \left( \textcolor{red}{\alpha} + w \cdot L(\tau) \right) \cdot g_1 }_{A},
+\underbrace{ \left( \textcolor{red}{\beta} + w \cdot R(\tau) \right) \cdot g_2 }_{B}) = \\
+& \underbrace{e(\textcolor{red}{\alpha} \cdot g_1, \textcolor{red}{\beta} \cdot g_2)}_{D} \cdot \\
+& e(\underbrace{\left( \textcolor{red}{\alpha} \cdot w \cdot R(\tau) + \textcolor{red}{\beta} \cdot w \cdot L(\tau) + w \cdot O(\tau) + H(\tau) \cdot T(\tau) \right)}_{C}, g_2)
 \end{align*}
 
 \end{frame}
